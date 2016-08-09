@@ -5,20 +5,27 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	"github.com/spektroskop/keiro"
+	"github.com/unrolled/render"
 )
+
+var rndr = render.New(render.Options{
+	IndentJSON: true,
+})
 
 func foo(w http.ResponseWriter, r *http.Request) error {
 	param := keiro.Param(r.Context(), "param")
 	logrus.Infof("Foo %v", param)
-	return keiro.JSON(w, http.StatusOK,
+	rndr.JSON(w, http.StatusOK,
 		map[string]interface{}{"Foo": "OK"},
 	)
+
+	return nil
 }
 
 func bar(w http.ResponseWriter, r *http.Request) {
 	param := keiro.Param(r.Context(), "param")
 	logrus.Infof("Bar %v", param)
-	keiro.JSON(w, http.StatusInternalServerError,
+	rndr.JSON(w, http.StatusInternalServerError,
 		map[string]interface{}{"Bar": "Error"},
 	)
 }
