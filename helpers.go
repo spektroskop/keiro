@@ -13,6 +13,8 @@ func Param(ctx context.Context, name string) string {
 	return params.Get(name)
 }
 
-func JSON(w http.ResponseWriter, object interface{}) error {
+func JSON(w http.ResponseWriter, code int, object interface{}) error {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(code)
 	return json.NewEncoder(w).Encode(object)
 }

@@ -10,12 +10,19 @@ import (
 func foo(w http.ResponseWriter, r *http.Request) error {
 	param := keiro.Param(r.Context(), "param")
 	logrus.Infof("Foo %v", param)
-	return keiro.JSON(w, map[string]interface{}{"Jaa": "Foooo"})
+	return keiro.JSON(w,
+		http.StatusOK,
+		map[string]interface{}{"Foo": "OK"},
+	)
 }
 
 func bar(w http.ResponseWriter, r *http.Request) {
 	param := keiro.Param(r.Context(), "param")
 	logrus.Infof("Bar %v", param)
+	keiro.JSON(w,
+		http.StatusInternalServerError,
+		map[string]interface{}{"Bar": "Error"},
+	)
 }
 
 func baz(w http.ResponseWriter, r *http.Request) error {
