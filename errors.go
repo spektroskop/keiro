@@ -20,3 +20,9 @@ func NotFound(message string) error {
 		http.StatusNotFound, message,
 	}
 }
+
+func Forbidden(message string) error {
+	return &HTTPError{
+		http.StatusForbidden, message,
+	}
+}

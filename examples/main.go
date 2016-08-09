@@ -28,7 +28,7 @@ func bar(w http.ResponseWriter, r *http.Request) {
 func baz(w http.ResponseWriter, r *http.Request) error {
 	param := keiro.Param(r.Context(), "param")
 	logrus.Infof("Baz %v", param)
-	return nil
+	return keiro.Forbidden("Nope")
 }
 
 func main() {
