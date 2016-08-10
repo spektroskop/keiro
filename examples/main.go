@@ -1,47 +1,18 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/spektroskop/keiro"
-	"github.com/unrolled/render"
 )
 
-var rndr = render.New(render.Options{
-	IndentJSON: true,
-})
-
-func foo(w http.ResponseWriter, r *http.Request) error {
-	param := keiro.Param(r.Context(), "param")
-	logrus.Infof("Foo %v", param)
-	rndr.JSON(w, http.StatusOK,
-		map[string]interface{}{"Foo": "OK"},
-	)
-
-	return nil
-}
-
-func bar(w http.ResponseWriter, r *http.Request) {
-	param := keiro.Param(r.Context(), "param")
-	logrus.Infof("Bar %v", param)
-	rndr.JSON(w, http.StatusInternalServerError,
-		map[string]interface{}{"Bar": "Error"},
-	)
-}
-
-func baz(w http.ResponseWriter, r *http.Request) error {
-	param := keiro.Param(r.Context(), "param")
-	logrus.Infof("Baz %v", param)
-	return keiro.Forbidden("Nope")
+func hello(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello %v\n", keiro.Param(r, "param"))
 }
 
 func main() {
 	mux := keiro.New()
-
-	mux.GET("/foo/:param", keiro.Handler(foo))
-	mux.GET("/bar/:param", http.HandlerFunc(bar))
-	mux.GET("/baz", keiro.Handler(baz))
-
-	logrus.Fatal(mux.Run(":3000"))
+	mux.GET("/hello/:param", http.HandlerFunc(hello))
+	http.ListenAndServe(":3000", mux)
 }
