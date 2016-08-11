@@ -22,7 +22,7 @@ func New(ctx context.Context) *Mux {
 
 func (mux *Mux) Handle(method, path string, handler http.Handler) {
 	mux.router.Handle(method, path, func(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
-		ctx := params(mux.ctx, p)
+		ctx := makeParams(mux.ctx, p)
 		handler.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
