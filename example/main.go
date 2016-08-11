@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 
@@ -8,11 +9,13 @@ import (
 )
 
 func hello(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello %v\n", keiro.Param(r, "param"))
+	v := keiro.Context(r, "hei").(string)
+	fmt.Fprintf(w, "Hello %v %v\n", keiro.Param(r, "param"), v)
 }
 
 func main() {
-	mux := keiro.New()
+	ctx := context.WithValue(context.Background(), "hei", "ja")
+	mux := keiro.New(ctx)
 	mux.GET("/hello/:param", http.HandlerFunc(hello))
 	http.ListenAndServe(":3000", mux)
 }
