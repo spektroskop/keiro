@@ -16,6 +16,6 @@ func Param(r *http.Request, name string) string {
 	return params.(httprouter.Params).ByName(name)
 }
 
-func params(ctx context.Context, params httprouter.Params) context.Context {
+func makeParams(ctx context.Context, params httprouter.Params) context.Context {
 	return context.WithValue(ctx, paramsKey, params)
 }
