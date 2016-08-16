@@ -16,8 +16,12 @@ func Context(r *http.Request, name string) interface{} {
 	return r.Context().Value(name)
 }
 
-func New(ctx context.Context) *Mux {
+func WithContext(ctx context.Context) *Mux {
 	return &Mux{ctx, httprouter.New()}
+}
+
+func New() *Mux {
+	return &Mux{context.Background(), httprouter.New()}
 }
 
 func (mux *Mux) Handle(method, path string, handler http.Handler) {
