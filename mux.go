@@ -12,8 +12,8 @@ type Mux struct {
 	router *httprouter.Router
 }
 
-func Context(r *http.Request, name string) interface{} {
-	return r.Context().Value(name)
+func Context(r *http.Request, key interface{}) interface{} {
+	return r.Context().Value(key)
 }
 
 func WithContext(ctx context.Context) *Mux {
